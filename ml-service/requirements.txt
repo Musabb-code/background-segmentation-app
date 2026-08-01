@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+python-multipart
+tensorflow>=2.15
+opencv-python-headless
+numpy
+Pillow
+pydantic
+pydantic-settings
+python-jose[cryptography]
+pytest
+httpx

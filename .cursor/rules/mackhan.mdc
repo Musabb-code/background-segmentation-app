@@ -1,0 +1,39 @@
+---
+description: MACKHAN — Flutter Android app (primary product). backend/ + ml-service/ support the mobile app. PLAN.md is ONLY blueprint. Ponytail mandatory every task.
+globs:
+alwaysApply: true
+---
+
+# MACKHAN — What we build
+
+**Primary product: Flutter Android mobile app** in `mobile/` — real-time background removal on device, user auth, camera, profile.
+
+This is **not** a web app, desktop app, or iOS app (iOS is Post-MVP §14).
+
+| Layer | Role | Path |
+|-------|------|------|
+| **Mobile (main)** | Android app users install | `mobile/` |
+| **Backend API** | Express server the app calls for auth, profile, JWT — **not a website** | `backend/server.js` |
+| **ML service** | FastAPI server the app calls for HQ capture | `ml-service/` |
+| **Firebase** | Database + image storage (backend Admin SDK only; app uses API) | `firebase/` |
+
+**Data flow:** Android app → HTTP → `backend/` + `ml-service/` → Firebase. The app never writes to Firestore directly.
+
+---
+
+# MACKHAN — PLAN.md is mandatory boundary
+
+**Never build anything outside `docs/PLAN.md` §0–§13.**
+
+Every task:
+1. Read `docs/PLAN.md` — if not in plan, STOP
+2. Read `docs/TASKS.md` + `docs/LOG.md`
+3. **Read Ponytail SKILL.md — MANDATORY, every task, no exceptions** (`.cursor/skills/ponytail/SKILL.md`)
+4. Read Repo 2 Anthropic SKILL.md when task matches (PLAN §0.3)
+5. Read Repo 3 Flutter + Repo 4 Dart SKILL.md (Tasks 12–17 only)
+6. Build exactly what PLAN specifies
+7. **Apply Ponytail YAGNI check before marking done**
+8. Update `docs/LOG.md` + `docs/TASKS.md`
+
+Stack (locked in PLAN §1): **Flutter Android (primary)** · Express API · FastAPI ML · Firebase · Riverpod · ML Kit · MODNet · JWT.
+Security (PLAN §10): bcrypt, JWT env, Firestore deny-all, rate limits — never skip.

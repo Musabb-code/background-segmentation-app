@@ -1,6 +1,8 @@
-# MACKHAN — Real-Time Background Removal
+# Pixel Lift (background-segmentation-app)
 
-**Primary product:** Flutter Android app in `mobile/` — live camera background removal, auth, profile.
+**Repo:** https://github.com/Musabb-code/background-segmentation-app  
+
+**Primary product:** Flutter Android app in `mobile/` — live camera background removal (Pixel Lift), auth, profile.
 
 Supporting HTTP APIs (called by the app; not websites):
 
@@ -33,7 +35,7 @@ python -m pip install -r requirements.txt
 python scripts/download_model.py
 python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
-# App (Android emulator → host via 10.0.2.2)
+# App
 cd mobile
 flutter create . --platforms=android
 flutter pub get
@@ -47,6 +49,7 @@ Optional ML container: `docker compose up --build` (see `docker-compose.yml`).
 | Doc | Contents |
 |-----|----------|
 | [docs/PLAN.md](docs/PLAN.md) | Blueprint (§0–§13 only) |
+| [docs/PIXEL_LIFT_PLAN.md](docs/PIXEL_LIFT_PLAN.md) | Branding / modes / accuracy plan |
 | [docs/API.md](docs/API.md) | Backend + ML endpoints |
 | [docs/INSTALLATION.md](docs/INSTALLATION.md) | Local setup |
 | [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Production |

@@ -1,0 +1,9 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /profile-images/{userId}/{fileName} {
+      allow read: if true;           // public profile avatars
+      allow write: if false;         // uploads via backend Admin SDK only
+    }
+  }
+}

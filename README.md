@@ -68,3 +68,4 @@ cd backend; npm test
 cd ml-service; pytest          # needs Python 3.11 + tensorflow
 cd mobile; flutter test
 ```
+Git push test - september 11, 2026

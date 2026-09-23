@@ -981,8 +981,8 @@ Copy from PLAN.md — check off here as work completes:
 | **Skills read** | ponytail |
 | **Chat summary (this session arc)** | Compared vs remove.bg; planned features 1/2/3/4/8 in `GALLERY_EXPORT_PLAN.md`; G0 §8.4.11 in PLAN; G1 `crop_utils` + `export_utils`; G2 preview dialog + `editor_provider`; G3 gallery `/editor`; G4 export formats; G5 auto-crop; G6 product white JPG preset; G7 batch (20, on-device); G8 analyze/test/APK + `segmentStillFile()` dedupe |
 | **Files touched** | Whole gallery studio tree under `mobile/lib/` + `mobile/test/`; `docs/*` (LOG, TASKS, PLAN, runbooks); `.gitignore` |
-| **Outcome** | **Success** — commit `0a370bb` pushed to `origin/product-push` ([open PR to main](https://github.com/Musabb-code/Real-Time-Background-Removal-/pull/new/product-push)). Excluded from git: `.cursor/`, `.vscode/`, `debug.log`, `mobile/android/build/`, scratch notes at repo root. Device §4.4 checklist still pending on phone |
-| **Next** | Merge PR (or push to `main` if you prefer); manual §4.4 QA on device after `adb install` |
+| **Outcome** | **Success** — also synced to canonical repo [background-segmentation-app](https://github.com/Musabb-code/background-segmentation-app) (`app` remote): branch `gallery-studio` + merged `sync-background-app` → `main`. Earlier push: `origin/product-push` on Real-Time-Background-Removal-. Excluded from git: `.cursor/`, `.vscode/`, `debug.log`, `mobile/android/build/`. Device §4.4 checklist still pending on phone |
+| **Next** | Manual §4.4 QA on device after `adb install` |
 
 ---
 

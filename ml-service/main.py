@@ -18,4 +18,4 @@ app = FastAPI(
     description="HQ capture API for mobile/ app",
     lifespan=lifespan,
 )
-app.include_router(router)
+app.include_router(router) 

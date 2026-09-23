@@ -1,5 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/export_utils.dart';
+
 enum CameraResolution { p480, p720, p1080 }
 
 enum ProcessingQuality { standard, high }
@@ -13,6 +15,8 @@ class SettingsService {
   static const _resKey = 'camera_resolution';
   static const _qualityKey = 'processing_quality';
   static const _bgModeKey = 'background_mode';
+  static const _exportKey = 'export_format';
+  static const _autoCropKey = 'auto_crop';
   static const privacyPolicyUrl = 'https://example.com/privacy';
 
   Future<void> setDark(bool value) => _prefs.setBool(_darkKey, value);
@@ -48,4 +52,15 @@ class SettingsService {
 
   Future<void> setProcessingQuality(ProcessingQuality q) =>
       _prefs.setString(_qualityKey, q == ProcessingQuality.high ? 'high' : 'standard');
+
+  ExportFormat get exportFormat =>
+      exportFormatFromStorage(_prefs.getString(_exportKey));
+
+  Future<void> setExportFormat(ExportFormat format) =>
+      _prefs.setString(_exportKey, format.name);
+
+  /// Default ON — trim transparent margins after segment (§8.4.11).
+  bool get autoCrop => _prefs.getBool(_autoCropKey) ?? true;
+
+  Future<void> setAutoCrop(bool value) => _prefs.setBool(_autoCropKey, value);
 }

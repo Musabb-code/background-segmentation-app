@@ -9,11 +9,12 @@ import 'features/auth/presentation/reset_password_screen.dart';
 import 'features/auth/presentation/splash_screen.dart';
 import 'features/auth/presentation/verify_email_screen.dart';
 import 'features/camera/presentation/camera_screen.dart';
+import 'features/editor/presentation/editor_screen.dart';
 import 'features/home/presentation/home_screen.dart';
 import 'features/profile/presentation/profile_screen.dart';
 import 'features/settings/presentation/settings_screen.dart';
 import 'providers/auth_provider.dart';
-
+     
 final _rootKey = GlobalKey<NavigatorState>();
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -71,6 +72,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/home', builder: (_, __) => const HomeScreen()),
       GoRoute(path: '/camera', builder: (_, __) => const CameraScreen()),
+      GoRoute(
+        path: '/editor',
+        builder: (_, state) => EditorScreen(
+          preset: state.uri.queryParameters['preset'],
+          batch: state.uri.queryParameters['batch'] == '1',
+        ),
+      ),
       GoRoute(path: '/profile', builder: (_, __) => const ProfileScreen()),
       GoRoute(path: '/settings', builder: (_, __) => const SettingsScreen()),
     ],

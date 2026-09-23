@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/services/settings_service.dart';
+import '../core/utils/export_utils.dart';
 
 final themeModeProvider =
     StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
@@ -32,18 +33,26 @@ class AppSettingsState {
   const AppSettingsState({
     this.resolution = CameraResolution.p720,
     this.quality = ProcessingQuality.standard,
+    this.exportFormat = ExportFormat.png,
+    this.autoCrop = true,
   });
 
   final CameraResolution resolution;
   final ProcessingQuality quality;
+  final ExportFormat exportFormat;
+  final bool autoCrop;
 
   AppSettingsState copyWith({
     CameraResolution? resolution,
     ProcessingQuality? quality,
+    ExportFormat? exportFormat,
+    bool? autoCrop,
   }) =>
       AppSettingsState(
         resolution: resolution ?? this.resolution,
         quality: quality ?? this.quality,
+        exportFormat: exportFormat ?? this.exportFormat,
+        autoCrop: autoCrop ?? this.autoCrop,
       );
 }
 
@@ -58,6 +67,8 @@ class AppSettingsNotifier extends StateNotifier<AppSettingsState> {
     state = AppSettingsState(
       resolution: svc.cameraResolution,
       quality: svc.processingQuality,
+      exportFormat: svc.exportFormat,
+      autoCrop: svc.autoCrop,
     );
   }
 
@@ -71,6 +82,18 @@ class AppSettingsNotifier extends StateNotifier<AppSettingsState> {
     state = state.copyWith(quality: q);
     final prefs = await SharedPreferences.getInstance();
     await SettingsService(prefs).setProcessingQuality(q);
+  }
+
+  Future<void> setExportFormat(ExportFormat format) async {
+    state = state.copyWith(exportFormat: format);
+    final prefs = await SharedPreferences.getInstance();
+    await SettingsService(prefs).setExportFormat(format);
+  }
+
+  Future<void> setAutoCrop(bool value) async {
+    state = state.copyWith(autoCrop: value);
+    final prefs = await SharedPreferences.getInstance();
+    await SettingsService(prefs).setAutoCrop(value);
   }
 }
 

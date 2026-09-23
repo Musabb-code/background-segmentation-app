@@ -38,6 +38,9 @@ mobile/.pub-cache/
 # IDE & OS
 .idea/
 .vscode/
+.cursor/
+debug.log
+mobile/android/build/
 *.swp
 .DS_Store
 Thumbs.db

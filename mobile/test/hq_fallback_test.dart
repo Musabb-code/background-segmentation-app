@@ -5,6 +5,8 @@ import 'package:image/image.dart' as img;
 import 'package:mackhan/core/services/ml_on_device_service.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   test('segmentStillToPng encodes RGBA PNG', () async {
     final frame = img.Image(width: 32, height: 32);
     for (var y = 0; y < 32; y++) {
@@ -20,7 +22,7 @@ void main() {
     final svc = MlOnDeviceService();
     await svc.init();
     final png = await svc.segmentStillToPng(file);
-    await svc.dispose();
+    // dispose needs platform channel — not available in unit test host
 
     final decoded = img.decodePng(png);
     expect(decoded, isNotNull);

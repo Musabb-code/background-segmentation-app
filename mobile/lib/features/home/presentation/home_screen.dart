@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/theme/app_theme.dart';
 import '../../../models/api_error.dart';
 import '../../../models/user.dart';
 import '../../../providers/auth_provider.dart';
@@ -80,7 +81,47 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       icon: const Icon(Icons.camera_alt),
                       label: const Text('Open Pixel Lift'),
                     ),
+                    const SizedBox(height: 12),
+                    OutlinedButton.icon(
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(48),
+                      ),
+                      onPressed: () => context.push('/editor'),
+                      icon: const Icon(Icons.photo_library_outlined),
+                      label: const Text('Edit from Gallery'),
+                    ),
+                    const SizedBox(height: 12),
+                    FilledButton.tonalIcon(
+                      style: FilledButton.styleFrom(
+                        minimumSize: const Size.fromHeight(48),
+                        foregroundColor: AppTheme.accent,
+                      ),
+                      onPressed: () =>
+                          context.push('/editor?preset=product_white'),
+                      icon: const Icon(Icons.storefront_outlined),
+                      label: const Text('Product white BG'),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 4, left: 4, right: 4),
+                      child: Text(
+                        'Portrait · saves JPG on white',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                     const SizedBox(height: 8),
+                    TextButton(
+                      onPressed: () => context.push('/editor?batch=1'),
+                      child: const Text('Batch edit (up to 20)'),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        'On-device · saves each photo to gallery',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                     TextButton(
                       onPressed: () => context.push('/profile'),
                       child: const Text('View Profile'),

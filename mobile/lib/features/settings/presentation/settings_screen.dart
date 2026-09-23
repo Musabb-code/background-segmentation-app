@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/services/settings_service.dart';
+import '../../../core/utils/export_utils.dart';
 import '../../../providers/theme_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -54,6 +55,33 @@ class SettingsScreen extends ConsumerWidget {
                     }
                   },
                 ),
+              ),
+              ListTile(
+                title: const Text('Default export format'),
+                subtitle: Text(exportFormatLabel(settings.exportFormat)),
+                trailing: DropdownButton<ExportFormat>(
+                  value: settings.exportFormat,
+                  items: ExportFormat.values
+                      .map(
+                        (f) => DropdownMenuItem(
+                          value: f,
+                          child: Text(exportFormatLabel(f)),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (v) {
+                    if (v != null) {
+                      ref.read(appSettingsProvider.notifier).setExportFormat(v);
+                    }
+                  },
+                ),
+              ),
+              SwitchListTile(
+                title: const Text('Auto-crop after remove'),
+                subtitle: const Text('Trim empty transparent edges'),
+                value: settings.autoCrop,
+                onChanged: (v) =>
+                    ref.read(appSettingsProvider.notifier).setAutoCrop(v),
               ),
               SwitchListTile(
                 title: const Text('Processing Quality'),

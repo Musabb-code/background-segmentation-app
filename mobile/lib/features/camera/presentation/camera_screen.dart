@@ -5,7 +5,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gal/gal.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -13,6 +12,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../providers/camera_provider.dart';
 import '../../../widgets/error_snackbar.dart';
+import '../../../widgets/export_preview_dialog.dart';
 import '../models/background_mode.dart';
 
 class CameraScreen extends ConsumerStatefulWidget {
@@ -94,7 +94,7 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
 
       await showDialog<void>(
         context: context,
-        builder: (ctx) => _HqPreviewDialog(png: result.png),
+        builder: (ctx) => ExportPreviewDialog(imageBytes: result.png),
       );
     } catch (e) {
       if (!mounted) return;
@@ -444,76 +444,6 @@ class _AssetThumb extends StatelessWidget {
             width: selected ? 3 : 1,
           ),
           image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
-        ),
-      ),
-    );
-  }
-}
-
-class _HqPreviewDialog extends StatelessWidget {
-  const _HqPreviewDialog({required this.png});
-
-  final Uint8List png;
-
-  Future<void> _save(BuildContext context) async {
-    try {
-      final ok = await Gal.requestAccess();
-      if (!ok) {
-        if (context.mounted) {
-          showErrorSnackbar(context, 'Gallery permission denied');
-        }
-        return;
-      }
-      await Gal.putImageBytes(
-        png,
-        name: 'pixel_lift_${DateTime.now().millisecondsSinceEpoch}',
-      );
-      if (context.mounted) {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Saved to gallery')),
-        );
-      }
-    } catch (e) {
-      if (context.mounted) showErrorSnackbar(context, e.toString());
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog.fullscreen(
-      backgroundColor: Colors.black,
-      child: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              child: Row(
-                children: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Close'),
-                  ),
-                  const Spacer(),
-                  FilledButton(
-                    onPressed: () => _save(context),
-                    child: const Text('Save'),
-                  ),
-                ],
-              ),
-            ),
-            const Text(
-              'Checkerboard = transparent areas',
-              style: TextStyle(color: Colors.white70),
-            ),
-            Expanded(
-              child: InteractiveViewer(
-                child: Center(
-                  child: Image.memory(png, fit: BoxFit.contain),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );

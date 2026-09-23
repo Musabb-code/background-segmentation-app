@@ -35,6 +35,7 @@
 | **`docs/LOG.md`** | Project memory + history — what is done, what is next | **Read + update every task** |
 | **`docs/API.md`** | API reference (deliverable §11.1) | Build in todo #16 |
 | **`docs/INSTALLATION.md`** | Setup guide (deliverable §11.2) | Build in todo #16 |
+| **`docs/APK_PHONE_RUNBOOK.md`** | Copy-paste: build APK, install on phone, USB login | After toolchain installed |
 | **`docs/DEPLOYMENT.md`** | Deploy guide (deliverable §11.3) | Build in todo #16 |
 | **`agent/`** | All agent/skills tooling (not product code) | Reference only |
 | **`agent/CLOUDE.md`** | Index — points back to this plan | Reference only |
@@ -379,7 +380,9 @@ d:\MACKHAN\
         │   │   └── app_theme.dart
         │   ├── utils/
         │   │   ├── validators.dart
-        │   │   └── image_utils.dart
+        │   │   ├── image_utils.dart
+        │   │   ├── crop_utils.dart
+        │   │   └── export_utils.dart
         │   └── services/
         │       ├── api_client.dart
         │       ├── secure_storage_service.dart
@@ -397,7 +400,7 @@ d:\MACKHAN\
         │   ├── auth_provider.dart
         │   ├── theme_provider.dart
         │   ├── camera_provider.dart
-        │   └── settings_provider.dart
+        │   └── editor_provider.dart
         ├── features/
         │   ├── auth/
         │   │   ├── presentation/
@@ -413,16 +416,21 @@ d:\MACKHAN\
         │   │   └── presentation/home_screen.dart
         │   ├── camera/
         │   │   ├── presentation/camera_screen.dart
-        │   │   ├── widgets/segmentation_painter.dart
+        │   │   ├── models/background_mode.dart
         │   │   └── services/camera_service.dart
+        │   ├── editor/
+        │   │   └── presentation/editor_screen.dart
         │   ├── profile/
         │   │   └── presentation/profile_screen.dart
         │   └── settings/
         │       └── presentation/settings_screen.dart
         └── widgets/
-            ├── app_button.dart
+            ├── export_preview_dialog.dart
             ├── loading_overlay.dart
             └── error_snackbar.dart
+        test/
+            ├── crop_utils_test.dart
+            └── export_utils_test.dart
 ```
 
 ---
@@ -1059,6 +1067,19 @@ Auth guard: `ref.read(authProvider).isAuthenticated` — redirect to `/login` if
 - **Camera UX:** Idle = raw camera until Start; Stop clears mask; mode tray while using live remove; persist last background mode in SharedPreferences.
 - **Live accuracy:** Confidence threshold + edge feather + temporal mask smoothing; Settings Standard/High (skip-frame) already in §8.4.9.
 - **Out of this slice:** emoji stickers, multi-object, TFLite swap, hosted deploy (ops), custom training ([PLAN2.md](PLAN2.md)).
+
+#### 8.4.11 Gallery & export studio (remove.bg-style stills)
+
+> Adopted from [GALLERY_EXPORT_PLAN.md](GALLERY_EXPORT_PLAN.md).
+
+- **Gallery import:** Pick one or more photos from device gallery → segment subject → preview → save.
+- **Export formats:** PNG (transparent alpha), JPG (white background, no alpha), optional WebP (transparent).
+- **Auto-crop:** Trim empty transparent margins after segmentation (toggle in Settings, default ON for gallery).
+- **E-commerce preset:** One-tap “White background JPG” from Home or editor (segment + white composite + JPG save).
+- **Batch mode:** Multi-select gallery (max 20 images) → sequential process → save all to gallery with progress UI.
+- **ML path:** Same as §8.6 — `MlRepository.segmentImage` (Studio) with `MlOnDeviceService.segmentStillToPng` fallback.
+- **No new backend routes.** No remove.bg API. No new dependencies (`image` package covers encode).
+- **Out of scope:** product/object model (person-only ML Kit), video batch, cloud batch API.
 
 #### 8.4.8 Profile Screen
 

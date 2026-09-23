@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/services/ml_on_device_service.dart';
+import '../core/utils/crop_utils.dart';
 import '../core/services/settings_service.dart';
 import '../core/utils/image_utils.dart';
 import '../features/camera/models/background_mode.dart';
@@ -72,6 +73,36 @@ final mlOnDeviceProvider = Provider<MlOnDeviceService>((ref) {
   ref.onDispose(svc.dispose);
   return svc;
 });
+
+/// PLAN §8.6 still-image path: ML server → on-device fallback → optional auto-crop.
+Future<({Uint8List png, bool onDevice})> segmentStillFile(
+  Ref ref,
+  File file, {
+  bool onDeviceOnly = false,
+}) async {
+  final autoCrop = ref.read(appSettingsProvider).autoCrop;
+  Uint8List maybeCrop(Uint8List png) =>
+      autoCrop ? autoCropPngBytes(png) : png;
+
+  if (onDeviceOnly) {
+    return (
+      png: maybeCrop(await ref.read(mlOnDeviceProvider).segmentStillToPng(file)),
+      onDevice: true,
+    );
+  }
+  try {
+    return (
+      png: maybeCrop(await ref.read(mlRepositoryProvider).segmentImage(file)),
+      onDevice: false,
+    );
+  } catch (e) {
+    debugPrint('Still segment ML failed, on-device fallback: $e');
+    return (
+      png: maybeCrop(await ref.read(mlOnDeviceProvider).segmentStillToPng(file)),
+      onDevice: true,
+    );
+  }
+}
 
 final cameraProvider =
     StateNotifierProvider.autoDispose<CameraNotifier, CameraState>((ref) {
@@ -268,16 +299,8 @@ class CameraNotifier extends StateNotifier<CameraState> {
       }
       final file = File(shot.path);
 
-      try {
-        final png =
-            await _ref.read(mlRepositoryProvider).segmentImage(file);
-        return HqCaptureResult(png: png, onDevice: false);
-      } catch (e) {
-        debugPrint('HQ ML failed, on-device fallback: $e');
-        final png =
-            await _ref.read(mlOnDeviceProvider).segmentStillToPng(file);
-        return HqCaptureResult(png: png, onDevice: true);
-      }
+      final seg = await segmentStillFile(_ref, file);
+      return HqCaptureResult(png: seg.png, onDevice: seg.onDevice);
     } finally {
       if (wasProcessing && !_disposed) {
         try {

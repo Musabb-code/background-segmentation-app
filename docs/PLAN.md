@@ -32,10 +32,14 @@
 | **`docs/PLAN2.md`** | Phase 2 blueprint — custom training after MVP | After TASKS.md complete |
 | **`docs/TASKS2.md`** | Phase 2 step prompts (Tasks 21–31) | After TASKS.md complete |
 | **`docs/PIXEL_LIFT_PLAN.md`** | Product polish — Pixel Lift branding, modes, accuracy | After MVP runs on device; promote slices into PLAN.md before coding |
+| **`docs/mymodel.md`** | Google Colab copy-paste — train real-time TFLite + optional MODNet HQ | Phase 2; see [PLAN2.md](PLAN2.md) |
 | **`docs/LOG.md`** | Project memory + history — what is done, what is next | **Read + update every task** |
 | **`docs/API.md`** | API reference (deliverable §11.1) | Build in todo #16 |
 | **`docs/INSTALLATION.md`** | Setup guide (deliverable §11.2) | Build in todo #16 |
 | **`docs/APK_PHONE_RUNBOOK.md`** | Copy-paste: build APK, install on phone, USB login | After toolchain installed |
+| **`docs/CONNECTING_PROCESS.md`** | Viva runbook: install app, start servers, all demo accounts, full demo | After toolchain installed |
+| **`docs/DEPLOY_ACTION_PLAN.md`** | Deploy without cloud ML: YOU vs AI steps, Render/Railway, release APK | When hosting backend online |
+| **`docs/YOU_DEPLOY_STEPS.md`** | Your numbered steps after AI prep (Render, env, APK, test) | Deploy day |
 | **`docs/DEPLOYMENT.md`** | Deploy guide (deliverable §11.3) | Build in todo #16 |
 | **`agent/`** | All agent/skills tooling (not product code) | Reference only |
 | **`agent/CLOUDE.md`** | Index — points back to this plan | Reference only |

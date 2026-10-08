@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../core/constants/deploy_config.dart';
 import '../core/services/ml_on_device_service.dart';
 import '../core/utils/crop_utils.dart';
 import '../core/services/settings_service.dart';
@@ -84,7 +85,7 @@ Future<({Uint8List png, bool onDevice})> segmentStillFile(
   Uint8List maybeCrop(Uint8List png) =>
       autoCrop ? autoCropPngBytes(png) : png;
 
-  if (onDeviceOnly) {
+  if (onDeviceOnly || !DeployConfig.cloudMlEnabled) {
     return (
       png: maybeCrop(await ref.read(mlOnDeviceProvider).segmentStillToPng(file)),
       onDevice: true,

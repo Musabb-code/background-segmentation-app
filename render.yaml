@@ -1,0 +1,25 @@
+# Render Blueprint — Pixel Lift backend only (no ml-service).
+# YOU: In Render Dashboard → Sync / apply blueprint, then set secret env vars from backend/.env.render.example
+
+services:
+  - type: web
+    name: pixel-lift-api
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_ACCESS_EXPIRES
+        value: 15m
+      - key: JWT_REFRESH_EXPIRES
+        value: 7d
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      # Set in Render Dashboard (secrets): JWT_SECRET, JWT_REFRESH_SECRET,
+      # CLIENT_URL, FIREBASE_*, SMTP_USER, SMTP_PASS, EMAIL_FROM

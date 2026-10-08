@@ -11,6 +11,11 @@ const errorHandler = require('./src/middleware/errorHandler');
 
 const app = express();
 
+// Render/Railway sit behind a reverse proxy (rate limit + logs need real client IP).
+if (env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 // §6.3: helmet → cors → express.json → rateLimiter (on routes) → routes → errorHandler
 app.use(helmet());
 app.use(cors({ origin: env.CLIENT_URL, credentials: true }));

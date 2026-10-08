@@ -46,9 +46,9 @@ Full details: [agent/cloude/CLAUDE.md](../agent/cloude/CLAUDE.md)
 
 | Field | Value |
 |-------|-------|
-| **Project phase** | Phase 1 complete + Phase 6 Gallery studio (§8.4.11) complete |
-| **Active step** | Task G8 done — APK built; §4.4 device QA pending (no phone connected) |
-| **Last updated** | 2026-09-23 |
+| **Project phase** | Phase 1 complete + Phase 6 Gallery studio (§8.4.11) complete; **Phase 2 planning started** (Colab training doc) |
+| **Active step** | **Custom model training** — follow [mymodel.md](mymodel.md) on Google Colab (Track A TFLite real-time); device §4.4 QA still pending |
+| **Last updated** | 2026-10-08 (deploy action plan) |
 | **Repos integrated** | Repo 1–4 at `.cursor/skills/` (26 skills total) |
 
 ---
@@ -57,9 +57,10 @@ Full details: [agent/cloude/CLAUDE.md](../agent/cloude/CLAUDE.md)
 
 | Priority | PLAN.md todo | Action | Read these SKILL.md first |
 |----------|--------------|--------|---------------------------|
-| 1 | §11.2 / run | Test app screens, camera permission, and live ML Kit segmentation on phone | ponytail |
-| 2 | ML HQ | Optional later: Python/Node only if HQ capture / auth API needed | ponytail |
-| Optional | PLAN2 | Tasks 21–31 custom model training | ponytail + PLAN2 |
+| 1 | Phase 2 / Colab | Run [mymodel.md](mymodel.md) cells on Colab (GPU) → export `selfie_segmentation.tflite`; optional MODNet HQ track | ponytail + [PLAN2.md](PLAN2.md) |
+| 2 | TASKS2 Task 21 | Record ML baseline + Phase 2 gate before swapping weights in repo | ponytail |
+| 3 | §11.2 / run | Test app on phone ([APK_PHONE_RUNBOOK.md](APK_PHONE_RUNBOOK.md) §4.4 checklist) | ponytail |
+| Optional | TASKS2 22–31 | Scaffold `ml-service/training/` on PC; deploy SavedModel / wire TFLite (29a–29b) | ponytail + PLAN2 |
 
 **Build sequence** (PLAN.md §12): Foundation → Backend → ML → Flutter → Tests/Docs ✅
 ---
@@ -968,6 +969,48 @@ Copy from PLAN.md — check off here as work completes:
 | 8 | Offline batch | **Pending device** |
 
 | **Next** | Install APK per [APK_PHONE_RUNBOOK.md](APK_PHONE_RUNBOOK.md) §3–§5; run §4.4 checklist on device |
+
+---
+
+## Step 51 — Deploy prep (no cloud ML)
+
+| | |
+|---|---|
+| **Date** | 2026-10-08 |
+| **Action** | Render/Railway deploy artifacts: `render.yaml`, `backend/.env.render.example`, `railway.toml`, `Procfile`, `trust proxy`, Node engines, `DeployConfig` + `ML_CLOUD_ENABLED=false`, `scripts/build-production-apk.ps1`, `docs/YOU_DEPLOY_STEPS.md`. |
+| **PLAN.md todo** | §11.3 deploy companion |
+| **Skills read** | ponytail |
+| **Files touched** | backend + mobile + scripts + docs |
+| **Outcome** | **Success** — user follows YOU_DEPLOY_STEPS.md |
+| **Next** | User: Render + push GitHub + env + build APK |
+
+---
+
+## Step 50 — Viva runbook `CONNECTING_PROCESS.md`
+
+| | |
+|---|---|
+| **Date** | 2026-10-08 |
+| **Action** | Added `docs/CONNECTING_PROCESS.md`: install APK, backend/ML commands (with why), adb reverse, all demo emails, rate-limit fix, full viva demo script, troubleshooting (incl. wrong `node server.js` cwd). Linked from PLAN.md §0.2. |
+| **PLAN.md todo** | §11.2 companion |
+| **Skills read** | ponytail |
+| **Files touched** | `docs/CONNECTING_PROCESS.md`, `docs/PLAN.md`, `docs/LOG.md` |
+| **Outcome** | **Success** — single no-AI checklist for viva |
+| **Next** | Follow §14 checklist on device before viva |
+
+---
+
+## Step 49 — Colab custom model training plan (`mymodel.md`)
+
+| | |
+|---|---|
+| **Date** | 2026-09-29 |
+| **Action** | Wrote [mymodel.md](mymodel.md): copy-paste Google Colab cells for **Track A** real-time portrait model (MobileNetV2 → TFLite 256×256 → `mobile/assets/models/selfie_segmentation.tflite`) and **Track B** optional MODNet HQ fine-tune pointers aligned with [PLAN2.md](PLAN2.md) / [TASKS2.md](TASKS2.md). Updated LOG Current Status + Next Plan. |
+| **PLAN.md todo** | Phase 2 ([PLAN2.md](PLAN2.md) §2–§4) — planning doc only; no product code outside §0–§13 |
+| **Skills read** | ponytail |
+| **Files touched** | `docs/mymodel.md`, `docs/LOG.md` |
+| **Outcome** | **Success** — user can train on Colab before Tasks 22–26 land in `ml-service/training/` |
+| **Next** | Colab: GPU runtime → run mymodel.md Cells 1–A7; then Task 21 baseline + Task 29b if adopting custom live model |
 
 ---
 
